@@ -1,6 +1,6 @@
-# generated automatically by aclocal 1.16.1 -*- Autoconf -*-
+# generated automatically by aclocal 1.16.4 -*- Autoconf -*-
 
-# Copyright (C) 1996-2018 Free Software Foundation, Inc.
+# Copyright (C) 1996-2021 Free Software Foundation, Inc.
 
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -14,228 +14,15 @@
 m4_ifndef([AC_CONFIG_MACRO_DIRS], [m4_defun([_AM_CONFIG_MACRO_DIRS], [])m4_defun([AC_CONFIG_MACRO_DIRS], [_AM_CONFIG_MACRO_DIRS($@)])])
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
-m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.69],,
-[m4_warning([this file was generated for autoconf 2.69.
+m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.71],,
+[m4_warning([this file was generated for autoconf 2.71.
 You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically 'autoreconf'.])])
 
-# ===========================================================================
-#     https://www.gnu.org/software/autoconf-archive/ax_prog_help2man.html
-# ===========================================================================
-#
-# SYNOPSIS
-#
-#   AX_PROG_HELP2MAN([program list], [man directory prefix], [binary prefix])
-#
-# DESCRIPTION
-#
-#   AX_PROG_HELP2MAN is a macro designed to facilitate usage of help2man. It
-#   may take three optional arguments:
-#
-#   1. <program list>: comma-separated m4 list of input programs
-#
-#   Specifies the list of input programs which shall be used to produce man
-#   pages using help2man. If no value is specified, the macro assumes that
-#   the sole target will be named $(PACKAGE_NAME). Thus, the two following
-#   lines are equivalent:
-#
-#     AX_PROG_HELP2MAN
-#     AX_PROG_HELP2MAN([\$(PACKAGE_NAME)])
-#
-#   2. <man directory prefix>: directory prefix of the man pages directory
-#
-#   Sets AX_HELP2MAN_PREFIX_MANS to <man directory prefix>. Defaults to
-#   'doc/man/man1' if no value is provided. Note that
-#   AX_HELP2MAN_PREFIX_MANS will always be a subdirectory of the build
-#   directory.
-#
-#   3. <binary prefix>:
-#
-#   Sets AX_HELP2MAN_PREFIX_BIN to <binary prefix>. Defaults to
-#   '$(top_builddir)' if no value is provided. The two following lines are
-#   equivalent:
-#
-#     AX_PROG_HELP2MAN([subdir/program1, subdir/program2])
-#     AX_PROG_HELP2MAN([program1, program2], [], [\$(top_builddir)/subdir])
-#
-#   The macro:
-#
-#   - checks that help2man is available on the system.
-#
-#   - provides the configure option --disable-help2man.
-#
-#   - sets the output variable ax_help2man_MANS to the list of man pages
-#   that shall be generated.
-#
-#   - sets the automake conditional HAVE_HELP2MAN
-#
-#   - sets the substitution variable AX_HELP2MAN_RULES to the required make
-#   rules, targets and recipes.
-#
-#   Further detail on the macro can be found after the minimal working
-#   example. Here is a minimal working example:
-#
-#     # configure.ac:
-#     AX_PROG_HELP2MAN
-#
-#     # Makefile.am:
-#     if HAVE_HELP2MAN
-#     man1_MANS = $(ax_help2man_MANS)
-#     @AX_HELP2MAN_RULES@
-#     endif
-#
-#   This minimal working example shall work under the following assumptions:
-#
-#   1. the aforementioned binary has the same name as the project
-#
-#   2. the project produces a single binary at the root of the build
-#   directory
-#
-#   3. the man page shall be generated into the doc/man/man1 directory
-#
-#   Note that adding ax_help2man_MANS to man1_MANS is not needed if the man
-#   page generation is not mandatory.
-#
-#   The AX_HELP2MAN_RULES substitution variable shall contain:
-#
-#   - a recipe to create, if necessary, the destination directory.
-#
-#   - a generic rule to produce the manpages.
-#
-#   This rule targets the contents of the variable ax_help2man_MANS and its
-#   recipe shall be akin to the following:
-#
-#     $(HELP2MAN) -l -N --output="$@" --name="$(shell basename $<)" "$(shell dirname $<)/$(shell basename $<)"
-#
-#   Errors from this rule are ignored.
-#
-#   - rules for each input program and target man page.
-#
-#   For each input program, a rule akin to the following shall be available:
-#
-#     $(AX_HELP2MAN_PREFIX_MANS)/program.1: $(AX_HELP2MAN_PREFIX_BIN)/path/to/program
-#
-#   The macro assumes that all man pages shall be generated into the same
-#   directory (AX_HELP2MAN_PREFIX_MANS) and that all input programs can be
-#   found in the same directory (AX_HELP2MAN_PREFIX_BIN). If a subset of the
-#   inputs or outputs have different paths (for instance one of the inputs
-#   is a script available in $(top_srcdir) whereas the other inputs are
-#   programs compiled at build time), it can be customized in the
-#   Makefile.am: the target man page must be added to ax_help2man_MANS, so
-#   that it becomes a target of the generic rule for man pages and a rule
-#   must be added to specify its prerequisite:
-#
-#     ax_help2man_MANS += path/to/output/man/page.1
-#     path/to/output/man/page.1: path/to/input/program.1
-#
-#   Here is a full example for a project where binaries 'program1' and
-#   'program2' are compiled at build time whereas 'script' is available in
-#   the source tree:
-#
-#     # configure.ac:
-#       AX_PROG_HELP2MAN([program1, program2])
-#
-#     # Makefile.am:
-#       if HAVE_HELP2MAN
-#       man1_MANS = $(ax_help2man_MANS)
-#       @AX_HELP2MAN_RULES@
-#       ax_help2man_MANS += $(AX_HELP2MAN_PREFIX_MANS)/script.1
-#       $(AX_HELP2MAN_PREFIX_MANS)/script.1: $(top_srcdir)/script
-#       endif
-#
-#   Note that this macro should not be called more than once.
-#
-# LICENSE
-#
-#   Copyright (c) 2017 Harenome Ranaivoarivony-Razanajato <ranaivoarivony-razanajato@hareno.me>
-#
-#   This program is free software; you can redistribute it and/or modify it
-#   under the terms of the GNU General Public License as published by the
-#   Free Software Foundation; either version 3 of the License, or (at your
-#   option) any later version.
-#
-#   This program is distributed in the hope that it will be useful, but
-#   WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-#   Public License for more details.
-#
-#   Under Section 7 of GPL version 3, you are granted additional permissions
-#   described in the Autoconf Configure Script Exception, version 3.0, as
-#   published by the Free Software Foundation.
-#
-#   You should have received a copy of the GNU General Public License along
-#   with this program. If not, see <https://www.gnu.org/licenses/>.
+# pkg.m4 - Macros to locate and utilise pkg-config.   -*- Autoconf -*-
+# serial 11 (pkg-config-0.29.1)
 
-#serial 2
-
-AC_DEFUN_ONCE([AX_PROG_HELP2MAN],
-[
-  dnl The make rules use 'AM_V_P' and 'AM_V_at' which may not be known.
-  m4_pattern_allow(AM_V_P)
-  m4_pattern_allow(AM_V_at)
-
-  dnl Provide an option for the configure script, and check whether help2man
-  dnl is available and whether the user wants to use it.
-  AC_ARG_ENABLE(help2man,
-      [AS_HELP_STRING([--disable-help2man], [Disable help2man man generation])])
-  AC_PATH_PROG(HELP2MAN, help2man, false)
-  AS_IF([test "x$enable_help2man" = "xno"], [HELP2MAN="false"])
-  AM_CONDITIONAL([HAVE_HELP2MAN], [test "x$HELP2MAN" != "xfalse"])
-
-  dnl Default to 'doc' and $(top_builddir) if no prefixes were provided
-  AC_SUBST(AX_HELP2MAN_PREFIX_MANS, "\$(top_builddir)/m4_ifblank([$2], [doc/man/man1], [$2])")
-  AC_SUBST(AX_HELP2MAN_PREFIX_BIN, "m4_ifblank([$3], [\$(top_builddir)], [$3])")
-
-  ax_help2man_targets_text=""
-  m4_ifblank([$1],
-  dnl if no executable path was specified, default to $(PACKAGE_NAME)
-  [
-    ax_help2man_mans_list='$(AX_HELP2MAN_PREFIX_MANS)/$(PACKAGE_NAME).1'
-    ax_help2man_targets_text='$(AX_HELP2MAN_PREFIX_MANS)/$(PACKAGE_NAME).1: $(AX_HELP2MAN_PREFIX_BIN)/$(PACKAGE_NAME)'
-  ],
-  dnl else, (if executable path(s) were specified), create rules for each target
-  [
-    m4_foreach(target, [$1],
-    [
-      ax_help2man_target="target"
-      ax_help2man_target_name=$(basename "${ax_help2man_target}")
-      ax_help2man_mans_list="${ax_help2man_mans_list} "'$(AX_HELP2MAN_PREFIX_MANS)/'"${ax_help2man_target_name}"'.1'
-      ax_help2man_targets_text="${ax_help2man_targets_text}
-"'$(AX_HELP2MAN_PREFIX_MANS)/'"${ax_help2man_target_name}"'.1: $(AX_HELP2MAN_PREFIX_BIN)/'"${ax_help2man_target}"
-    ])
-  ])
-
-  dnl Reminder for $ax_help2man_rules_text:
-  dnl   Do not insert spaces here, make rules require tabs for indentation!
-  dnl
-  dnl $(shell dirname $<)/$(shell basename $<) instead of merely $<:
-  dnl   if the make rule prerequisite
-  dnl   (i.e the input program for help2man) is at the root of the directory, the
-  dnl   prerequisite text will only contain the name of the file. However,
-  dnl   help2man needs the leading './'... Fortunately, dirname returns '.' if its
-  dnl   input does not contain slashes!
-  ax_help2man_rules_text='
-# Rule to create the directory for man 1 pages
-$(AX_HELP2MAN_PREFIX_MANS):
-	$(AM_V_at)$(MKDIR_P) @S|@@
-
-# Generic rule to create manpages using help2man
-$(ax_help2man_MANS): | $(AX_HELP2MAN_PREFIX_MANS)
-	@if ! $(AM_V_P); then printf "  %-8s %s\n" "HELP2MAN" "@S|@@"; fi
-	$(AM_V_at)-$(HELP2MAN) -l -N --output="@S|@@" --name="$(shell basename $<)" "$(shell dirname $<)/$(shell basename $<)"
-
-# Targets
-'"${ax_help2man_targets_text}"
-
-  AC_SUBST([ax_help2man_MANS], ["${ax_help2man_mans_list}"])
-  AC_SUBST([AX_HELP2MAN_RULES], ["${ax_help2man_rules_text}"])
-  AM_SUBST_NOTMAKE([AX_HELP2MAN_RULES])
-])
-
-dnl pkg.m4 - Macros to locate and utilise pkg-config.   -*- Autoconf -*-
-dnl serial 11 (pkg-config-0.29)
-dnl
 dnl Copyright © 2004 Scott James Remnant <scott@netsplit.com>.
 dnl Copyright © 2012-2015 Dan Nicholson <dbn.lists@gmail.com>
 dnl
@@ -276,7 +63,7 @@ dnl
 dnl See the "Since" comment for each macro you use to see what version
 dnl of the macros you require.
 m4_defun([PKG_PREREQ],
-[m4_define([PKG_MACROS_VERSION], [0.29])
+[m4_define([PKG_MACROS_VERSION], [0.29.1])
 m4_if(m4_version_compare(PKG_MACROS_VERSION, [$1]), -1,
     [m4_fatal([pkg.m4 version $1 or higher is required but ]PKG_MACROS_VERSION[ found])])
 ])dnl PKG_PREREQ
@@ -509,7 +296,75 @@ AS_VAR_COPY([$1], [pkg_cv_][$1])
 AS_VAR_IF([$1], [""], [$5], [$4])dnl
 ])dnl PKG_CHECK_VAR
 
-# Copyright (C) 2002-2018 Free Software Foundation, Inc.
+dnl PKG_WITH_MODULES(VARIABLE-PREFIX, MODULES,
+dnl   [ACTION-IF-FOUND],[ACTION-IF-NOT-FOUND],
+dnl   [DESCRIPTION], [DEFAULT])
+dnl ------------------------------------------
+dnl
+dnl Prepare a "--with-" configure option using the lowercase
+dnl [VARIABLE-PREFIX] name, merging the behaviour of AC_ARG_WITH and
+dnl PKG_CHECK_MODULES in a single macro.
+AC_DEFUN([PKG_WITH_MODULES],
+[
+m4_pushdef([with_arg], m4_tolower([$1]))
+
+m4_pushdef([description],
+           [m4_default([$5], [build with ]with_arg[ support])])
+
+m4_pushdef([def_arg], [m4_default([$6], [auto])])
+m4_pushdef([def_action_if_found], [AS_TR_SH([with_]with_arg)=yes])
+m4_pushdef([def_action_if_not_found], [AS_TR_SH([with_]with_arg)=no])
+
+m4_case(def_arg,
+            [yes],[m4_pushdef([with_without], [--without-]with_arg)],
+            [m4_pushdef([with_without],[--with-]with_arg)])
+
+AC_ARG_WITH(with_arg,
+     AS_HELP_STRING(with_without, description[ @<:@default=]def_arg[@:>@]),,
+    [AS_TR_SH([with_]with_arg)=def_arg])
+
+AS_CASE([$AS_TR_SH([with_]with_arg)],
+            [yes],[PKG_CHECK_MODULES([$1],[$2],$3,$4)],
+            [auto],[PKG_CHECK_MODULES([$1],[$2],
+                                        [m4_n([def_action_if_found]) $3],
+                                        [m4_n([def_action_if_not_found]) $4])])
+
+m4_popdef([with_arg])
+m4_popdef([description])
+m4_popdef([def_arg])
+
+])dnl PKG_WITH_MODULES
+
+dnl PKG_HAVE_WITH_MODULES(VARIABLE-PREFIX, MODULES,
+dnl   [DESCRIPTION], [DEFAULT])
+dnl -----------------------------------------------
+dnl
+dnl Convenience macro to trigger AM_CONDITIONAL after PKG_WITH_MODULES
+dnl check._[VARIABLE-PREFIX] is exported as make variable.
+AC_DEFUN([PKG_HAVE_WITH_MODULES],
+[
+PKG_WITH_MODULES([$1],[$2],,,[$3],[$4])
+
+AM_CONDITIONAL([HAVE_][$1],
+               [test "$AS_TR_SH([with_]m4_tolower([$1]))" = "yes"])
+])dnl PKG_HAVE_WITH_MODULES
+
+dnl PKG_HAVE_DEFINE_WITH_MODULES(VARIABLE-PREFIX, MODULES,
+dnl   [DESCRIPTION], [DEFAULT])
+dnl ------------------------------------------------------
+dnl
+dnl Convenience macro to run AM_CONDITIONAL and AC_DEFINE after
+dnl PKG_WITH_MODULES check. HAVE_[VARIABLE-PREFIX] is exported as make
+dnl and preprocessor variable.
+AC_DEFUN([PKG_HAVE_DEFINE_WITH_MODULES],
+[
+PKG_HAVE_WITH_MODULES([$1],[$2],[$3],[$4])
+
+AS_IF([test "$AS_TR_SH([with_]m4_tolower([$1]))" = "yes"],
+        [AC_DEFINE([HAVE_][$1], 1, [Enable ]m4_tolower([$1])[ support])])
+])dnl PKG_HAVE_DEFINE_WITH_MODULES
+
+# Copyright (C) 2002-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -524,7 +379,7 @@ AC_DEFUN([AM_AUTOMAKE_VERSION],
 [am__api_version='1.16'
 dnl Some users find AM_AUTOMAKE_VERSION and mistake it for a way to
 dnl require some minimum version.  Point them to the right macro.
-m4_if([$1], [1.16.1], [],
+m4_if([$1], [1.16.4], [],
       [AC_FATAL([Do not call $0, use AM_INIT_AUTOMAKE([$1]).])])dnl
 ])
 
@@ -540,14 +395,14 @@ m4_define([_AM_AUTOCONF_VERSION], [])
 # Call AM_AUTOMAKE_VERSION and AM_AUTOMAKE_VERSION so they can be traced.
 # This function is AC_REQUIREd by AM_INIT_AUTOMAKE.
 AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION],
-[AM_AUTOMAKE_VERSION([1.16.1])dnl
+[AM_AUTOMAKE_VERSION([1.16.4])dnl
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
 _AM_AUTOCONF_VERSION(m4_defn([AC_AUTOCONF_VERSION]))])
 
 # AM_AUX_DIR_EXPAND                                         -*- Autoconf -*-
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -599,7 +454,7 @@ am_aux_dir=`cd "$ac_aux_dir" && pwd`
 
 # AM_CONDITIONAL                                            -*- Autoconf -*-
 
-# Copyright (C) 1997-2018 Free Software Foundation, Inc.
+# Copyright (C) 1997-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -630,7 +485,7 @@ AC_CONFIG_COMMANDS_PRE(
 Usually this means the macro was only invoked conditionally.]])
 fi])])
 
-# Copyright (C) 1999-2018 Free Software Foundation, Inc.
+# Copyright (C) 1999-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -821,7 +676,7 @@ _AM_SUBST_NOTMAKE([am__nodep])dnl
 
 # Generate code to set up dependency tracking.              -*- Autoconf -*-
 
-# Copyright (C) 1999-2018 Free Software Foundation, Inc.
+# Copyright (C) 1999-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -860,7 +715,9 @@ AC_DEFUN([_AM_OUTPUT_DEPENDENCY_COMMANDS],
   done
   if test $am_rc -ne 0; then
     AC_MSG_FAILURE([Something went wrong bootstrapping makefile fragments
-    for automatic dependency tracking.  Try re-running configure with the
+    for automatic dependency tracking.  If GNU make was not used, consider
+    re-running the configure script with MAKE="gmake" (or whatever is
+    necessary).  You can also try re-running configure with the
     '--disable-dependency-tracking' option to at least be able to build
     the package (albeit without support for automatic dependency tracking).])
   fi
@@ -887,7 +744,7 @@ AC_DEFUN([AM_OUTPUT_DEPENDENCY_COMMANDS],
 
 # Do all the work for Automake.                             -*- Autoconf -*-
 
-# Copyright (C) 1996-2018 Free Software Foundation, Inc.
+# Copyright (C) 1996-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -951,7 +808,7 @@ m4_ifval([$3], [_AM_SET_OPTION([no-define])])dnl
 [_AM_SET_OPTIONS([$1])dnl
 dnl Diagnose old-style AC_INIT with new-style AM_AUTOMAKE_INIT.
 m4_if(
-  m4_ifdef([AC_PACKAGE_NAME], [ok]):m4_ifdef([AC_PACKAGE_VERSION], [ok]),
+  m4_ifset([AC_PACKAGE_NAME], [ok]):m4_ifset([AC_PACKAGE_VERSION], [ok]),
   [ok:ok],,
   [m4_fatal([AC_INIT should be called with package and version arguments])])dnl
  AC_SUBST([PACKAGE], ['AC_PACKAGE_TARNAME'])dnl
@@ -1003,6 +860,20 @@ AC_PROVIDE_IFELSE([AC_PROG_OBJCXX],
 		  [m4_define([AC_PROG_OBJCXX],
 			     m4_defn([AC_PROG_OBJCXX])[_AM_DEPENDENCIES([OBJCXX])])])dnl
 ])
+# Variables for tags utilities; see am/tags.am
+if test -z "$CTAGS"; then
+  CTAGS=ctags
+fi
+AC_SUBST([CTAGS])
+if test -z "$ETAGS"; then
+  ETAGS=etags
+fi
+AC_SUBST([ETAGS])
+if test -z "$CSCOPE"; then
+  CSCOPE=cscope
+fi
+AC_SUBST([CSCOPE])
+
 AC_REQUIRE([AM_SILENT_RULES])dnl
 dnl The testsuite driver may need to know about EXEEXT, so add the
 dnl 'am__EXEEXT' conditional if _AM_COMPILER_EXEEXT was seen.  This
@@ -1084,7 +955,7 @@ for _am_header in $config_headers :; do
 done
 echo "timestamp for $_am_arg" >`AS_DIRNAME(["$_am_arg"])`/stamp-h[]$_am_stamp_count])
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1105,7 +976,7 @@ if test x"${install_sh+set}" != xset; then
 fi
 AC_SUBST([install_sh])])
 
-# Copyright (C) 2003-2018 Free Software Foundation, Inc.
+# Copyright (C) 2003-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1126,7 +997,7 @@ AC_SUBST([am__leading_dot])])
 
 # Check to see how 'make' treats includes.	            -*- Autoconf -*-
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1169,7 +1040,7 @@ AC_SUBST([am__quote])])
 
 # Fake the existence of programs that GNU maintainers use.  -*- Autoconf -*-
 
-# Copyright (C) 1997-2018 Free Software Foundation, Inc.
+# Copyright (C) 1997-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1190,12 +1061,7 @@ AC_DEFUN([AM_MISSING_HAS_RUN],
 [AC_REQUIRE([AM_AUX_DIR_EXPAND])dnl
 AC_REQUIRE_AUX_FILE([missing])dnl
 if test x"${MISSING+set}" != xset; then
-  case $am_aux_dir in
-  *\ * | *\	*)
-    MISSING="\${SHELL} \"$am_aux_dir/missing\"" ;;
-  *)
-    MISSING="\${SHELL} $am_aux_dir/missing" ;;
-  esac
+  MISSING="\${SHELL} '$am_aux_dir/missing'"
 fi
 # Use eval to expand $SHELL
 if eval "$MISSING --is-lightweight"; then
@@ -1208,7 +1074,7 @@ fi
 
 # Helper functions for option handling.                     -*- Autoconf -*-
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1237,7 +1103,7 @@ AC_DEFUN([_AM_SET_OPTIONS],
 AC_DEFUN([_AM_IF_OPTION],
 [m4_ifset(_AM_MANGLE_OPTION([$1]), [$2], [$3])])
 
-# Copyright (C) 1999-2018 Free Software Foundation, Inc.
+# Copyright (C) 1999-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1284,7 +1150,7 @@ AC_LANG_POP([C])])
 # For backward compatibility.
 AC_DEFUN_ONCE([AM_PROG_CC_C_O], [AC_REQUIRE([AC_PROG_CC])])
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1303,7 +1169,7 @@ AC_DEFUN([AM_RUN_LOG],
 
 # Check to make sure that the build environment is sane.    -*- Autoconf -*-
 
-# Copyright (C) 1996-2018 Free Software Foundation, Inc.
+# Copyright (C) 1996-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1384,7 +1250,7 @@ AC_CONFIG_COMMANDS_PRE(
 rm -f conftest.file
 ])
 
-# Copyright (C) 2009-2018 Free Software Foundation, Inc.
+# Copyright (C) 2009-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1444,7 +1310,7 @@ AC_SUBST([AM_BACKSLASH])dnl
 _AM_SUBST_NOTMAKE([AM_BACKSLASH])dnl
 ])
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1472,7 +1338,7 @@ fi
 INSTALL_STRIP_PROGRAM="\$(install_sh) -c -s"
 AC_SUBST([INSTALL_STRIP_PROGRAM])])
 
-# Copyright (C) 2006-2018 Free Software Foundation, Inc.
+# Copyright (C) 2006-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1491,7 +1357,7 @@ AC_DEFUN([AM_SUBST_NOTMAKE], [_AM_SUBST_NOTMAKE($@)])
 
 # Check how to create a tarball.                            -*- Autoconf -*-
 
-# Copyright (C) 2004-2018 Free Software Foundation, Inc.
+# Copyright (C) 2004-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,

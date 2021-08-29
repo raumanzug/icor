@@ -134,7 +134,7 @@ int icor_cmdline_main(int argc, char **argv, icor_cmdline_t *pCmdline) {
             stderr);
     } else if (!(pCmdline->input).filetype) {
       retval = -1;
-      fputs("image type cannot be derived from input filename.  Specify on "
+      fputs("image type cannot be derived from input filename.  Specify one "
             "with --iformat option or use suitable input filename\n",
             stderr);
     }
@@ -145,7 +145,7 @@ int icor_cmdline_main(int argc, char **argv, icor_cmdline_t *pCmdline) {
           stderr);
     } else if (!(pCmdline->output).filetype) {
       retval = -1;
-      fputs("image type cannot be derived from output filename.  Specify on "
+      fputs("image type cannot be derived from output filename.  Specify one "
             "with --oformat option or use suitable output filename\n",
             stderr);
     }
@@ -187,7 +187,11 @@ void icor_set_filename(icor_fileinfo_t *pFileinfo, const char *filename) {
 
   pFileinfo->filename = filename;
   if (!pFileinfo->filetype) {
-    icor_set_filetype(pFileinfo, strrchr(filename, '.') + 1);
+    char *pDot =  strrchr(filename, '.');
+    if (pDot) {
+       pDot++;
+    }
+    icor_set_filetype(pFileinfo, pDot);
   }
 }
 
